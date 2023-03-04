@@ -1,8 +1,8 @@
 package com.example.demo.services.business.exceptions;
 
-public class CreateCustomerFailed extends Exception {
+public class CreateCustomerFailedException extends Exception {
 
-  public CreateCustomerFailed(String cause) {
+  public CreateCustomerFailedException(String cause) {
     super("Create customer failed: %s".formatted(cause));
   }
 }

@@ -1,22 +1,23 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.NewAgreementDto;
-import com.example.demo.services.business.exceptions.CreateAgreementFailed;
-import com.example.demo.services.business.exceptions.CreateCustomerFailed;
-import com.example.demo.services.business.exceptions.UpdateAgreementStatusFailed;
-import com.example.demo.services.business.models.Agreement;
+import com.example.demo.services.business.exceptions.CreateAgreementFailedException;
+import com.example.demo.services.business.exceptions.CreateCustomerFailedException;
+import com.example.demo.services.business.exceptions.UpdateAgreementStatusFailedException;
 import com.example.demo.services.integration.IntegrationService;
-import com.example.demo.services.integration.exceptions.SendAgreementLetterFailed;
-import com.example.demo.services.letter.exceptions.LetterFailedException;
+import com.example.demo.services.integration.exceptions.SendAgreementLetterFailedException;
+import com.example.demo.services.letter.exceptions.LetterFailedExceptionException;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/api")
 public class IntegrationController {
-//  private final Logger logger = LoggerFactory.getLogger(IntegrationController.class);
+  private final Logger logger = LoggerFactory.getLogger(IntegrationController.class);
 
   private final IntegrationService integrationService;
 
@@ -25,30 +26,14 @@ public class IntegrationController {
     this.integrationService = integrationService;
   }
 
-  @GET
-  @Path("/health")
-  public String hello() {
-    // Maybe verify dependencies
-    return "OK";
-  }
-
   @POST
   @Path("/agreement")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createAgreement(@Valid NewAgreementDto newAgreementDto) {
-    Agreement agreement = null;
-    try {
-      agreement = this.integrationService.createAgreement(newAgreementDto.toServiceModel());
-      //logger.info("Successfully created agreement with id [%s]".formatted(agreement.id()));
-      return Response.ok(agreement).build();
-    } catch (SendAgreementLetterFailed
-        | LetterFailedException
-        | CreateCustomerFailed
-        | CreateAgreementFailed
-        | UpdateAgreementStatusFailed e) {
-      //logger.error("Failed to create agreement", e);
-      return Response.serverError().build();
-    }
+  public Response createAgreement(@Valid NewAgreementDto newAgreementDto) throws LetterFailedExceptionException, CreateAgreementFailedException, CreateCustomerFailedException, UpdateAgreementStatusFailedException, SendAgreementLetterFailedException {
+    var agreement = this.integrationService.createAgreement(newAgreementDto.toServiceModel());
+    logger.info("Successfully created agreement with id [%s]".formatted(agreement.id()));
+    return Response.ok(agreement).build();
   }
+
 }
