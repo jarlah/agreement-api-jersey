@@ -4,7 +4,6 @@ import com.example.demo.services.integration.models.NewAgreement;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
-
 import java.math.BigDecimal;
 
 public record NewAgreementDto(

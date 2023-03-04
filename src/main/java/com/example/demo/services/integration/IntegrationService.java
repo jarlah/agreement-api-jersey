@@ -11,6 +11,7 @@ import com.example.demo.services.letter.exceptions.LetterFailedExceptionExceptio
 public interface IntegrationService {
 
   Agreement createAgreement(NewAgreement newAgreementDto)
-      throws LetterFailedExceptionException, CreateCustomerFailedException, CreateAgreementFailedException,
-          UpdateAgreementStatusFailedException, SendAgreementLetterFailedException;
+      throws LetterFailedExceptionException, CreateCustomerFailedException,
+          CreateAgreementFailedException, UpdateAgreementStatusFailedException,
+          SendAgreementLetterFailedException;
 }

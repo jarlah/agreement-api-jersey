@@ -1,13 +1,10 @@
 package com.example.demo.validation;
 
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-
-import java.util.List;
 
 @Provider
 public class BeanValidationExceptionMapper
@@ -21,4 +18,3 @@ public class BeanValidationExceptionMapper
         .build();
   }
 }
-

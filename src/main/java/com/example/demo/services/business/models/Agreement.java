@@ -4,4 +4,4 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record Agreement(
-        UUID id, AgreementStatus status, BigDecimal agreementPrice, UUID customerId) {}
+    UUID id, AgreementStatus status, BigDecimal agreementPrice, UUID customerId) {}

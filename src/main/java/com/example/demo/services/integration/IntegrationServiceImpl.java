@@ -26,8 +26,9 @@ public class IntegrationServiceImpl implements IntegrationService {
 
   @Override
   public Agreement createAgreement(NewAgreement newAgreement)
-      throws LetterFailedExceptionException, CreateCustomerFailedException, CreateAgreementFailedException,
-          UpdateAgreementStatusFailedException, SendAgreementLetterFailedException {
+      throws LetterFailedExceptionException, CreateCustomerFailedException,
+          CreateAgreementFailedException, UpdateAgreementStatusFailedException,
+          SendAgreementLetterFailedException {
     var customer =
         businessService.createCustomer(newAgreement.customerPid(), newAgreement.customerName());
     var agreement = businessService.createAgreement(customer.id(), newAgreement.agreementPrice());

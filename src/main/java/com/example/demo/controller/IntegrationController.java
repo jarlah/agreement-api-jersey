@@ -30,10 +30,12 @@ public class IntegrationController {
   @Path("/agreement")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createAgreement(@Valid NewAgreementDto newAgreementDto) throws LetterFailedExceptionException, CreateAgreementFailedException, CreateCustomerFailedException, UpdateAgreementStatusFailedException, SendAgreementLetterFailedException {
+  public Response createAgreement(@Valid NewAgreementDto newAgreementDto)
+      throws LetterFailedExceptionException, CreateAgreementFailedException,
+          CreateCustomerFailedException, UpdateAgreementStatusFailedException,
+          SendAgreementLetterFailedException {
     var agreement = this.integrationService.createAgreement(newAgreementDto.toServiceModel());
     logger.info("Successfully created agreement with id [%s]".formatted(agreement.id()));
     return Response.ok(agreement).build();
   }
-
 }

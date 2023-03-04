@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 
 @Provider
 public class ExceptionHandler implements ExceptionMapper<Exception> {
-    private final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
+  private final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
-    @Override
-    public Response toResponse(Exception exception) {
-        // TODO check type of exception and possibly return different responses
-        logger.error("Internal server error", exception);
-        return Response.serverError().build();
-    }
+  @Override
+  public Response toResponse(Exception exception) {
+    // TODO check type of exception and possibly return different responses
+    logger.error("Internal server error", exception);
+    return Response.serverError().build();
+  }
 }
