@@ -1,4 +1,4 @@
-package com.example.demo.validation;
+package com.example.demo.config;
 
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.MediaType;
