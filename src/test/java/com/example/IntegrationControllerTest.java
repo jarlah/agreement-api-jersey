@@ -32,7 +32,7 @@ public class IntegrationControllerTest extends JerseyTest {
   private final BusinessService mockBusinessService = Mockito.mock(BusinessService.class);
 
   @Test
-  public void test()
+  public void createAgreementWithValidPayload()
       throws LetterFailedExceptionException, CreateCustomerFailedException,
           CreateAgreementFailedException, UpdateAgreementStatusFailedException {
     // Given:
