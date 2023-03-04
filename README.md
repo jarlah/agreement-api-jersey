@@ -1,5 +1,9 @@
 # agreement api
 
+The original implementation of this repository, implemented with spring boot 3, can be found at:
+
+https://github.com/jarlah/agreement-api
+
 # How to call the agreement api
 
 ```
