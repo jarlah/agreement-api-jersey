@@ -9,8 +9,6 @@ import com.example.demo.services.business.models.AgreementStatus;
 import com.example.demo.services.integration.exceptions.SendAgreementLetterFailedException;
 import com.example.demo.services.integration.models.NewAgreement;
 import com.example.demo.services.letter.LetterService;
-import com.example.demo.services.letter.exceptions.LetterFailedExceptionException;
-import com.example.demo.services.letter.models.LetterStatus;
 import jakarta.inject.Inject;
 
 public class IntegrationServiceImpl implements IntegrationService {
@@ -26,18 +24,13 @@ public class IntegrationServiceImpl implements IntegrationService {
 
   @Override
   public Agreement createAgreement(NewAgreement newAgreement)
-      throws LetterFailedExceptionException, CreateCustomerFailedException,
-          CreateAgreementFailedException, UpdateAgreementStatusFailedException,
-          SendAgreementLetterFailedException {
-    var customer =
+      throws CreateCustomerFailedException, CreateAgreementFailedException,
+          UpdateAgreementStatusFailedException, SendAgreementLetterFailedException {
+    final var customer =
         businessService.createCustomer(newAgreement.customerPid(), newAgreement.customerName());
-    var agreement = businessService.createAgreement(customer.id(), newAgreement.agreementPrice());
-    var status = letterService.sendAgreementLetterToCustomer(agreement, customer);
-    if (status == LetterStatus.SENT_OK) {
-      agreement = businessService.updateAgreementStatus(agreement, AgreementStatus.AGREEMENT_SENT);
-    } else {
-      throw new SendAgreementLetterFailedException("Status for letter is: %s".formatted(status));
-    }
-    return agreement;
+    final var agreement =
+        businessService.createAgreement(customer.id(), newAgreement.agreementPrice());
+    letterService.sendAgreementLetterToCustomer(agreement, customer);
+    return businessService.updateAgreementStatus(agreement, AgreementStatus.AGREEMENT_SENT);
   }
 }
