@@ -31,7 +31,7 @@ public class HealthControllerTest {
   /** Test to see that the message "Got it!" is sent in the response. */
   @Test
   public void testGetIt() {
-    String responseMsg = target.path("/api/health").request().get(String.class);
+    String responseMsg = target.path("/health").request().get(String.class);
     assertEquals("OK", responseMsg);
   }
 }
