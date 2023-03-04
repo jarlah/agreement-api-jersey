@@ -19,9 +19,12 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import no.bekk.bekkopen.person.FodselsnummerCalculator;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.jupiter.api.Test;
@@ -37,32 +40,43 @@ public class IntegrationControllerTest extends JerseyTest {
           CreateAgreementFailedException, UpdateAgreementStatusFailedException {
     // Given:
     var customerId = UUID.randomUUID();
-    var customerPid = "1234";
+    var customerPid = FodselsnummerCalculator.getFodselsnummerForDate(new Date()).toString();
     var customerName = "Test customer";
     var customer = new Customer(customerId, customerPid, customerName);
     var agreementId = UUID.randomUUID();
     var agreementPrice = 1000;
+    var agreementDate = LocalDate.of(1999, 1, 24);
     var agreement =
         new Agreement(
-            agreementId, AgreementStatus.DRAFT, BigDecimal.valueOf(agreementPrice), customerId);
+            agreementId,
+            AgreementStatus.DRAFT,
+            BigDecimal.valueOf(agreementPrice),
+            agreementDate,
+            customerId);
     Mockito.when(mockLetterService.sendAgreementLetterToCustomer(agreement, customer))
         .thenReturn(LetterStatus.SENT_OK);
     Mockito.when(mockBusinessService.createCustomer(customerPid, customerName))
         .thenReturn(customer);
     Mockito.when(
-            mockBusinessService.createAgreement(customerId, BigDecimal.valueOf(agreementPrice)))
+            mockBusinessService.createAgreement(
+                customerId, BigDecimal.valueOf(agreementPrice), agreementDate))
         .thenReturn(agreement);
     Mockito.when(
             mockBusinessService.updateAgreementStatus(agreement, AgreementStatus.AGREEMENT_SENT))
         .thenReturn(
             new Agreement(
-                agreementId, AgreementStatus.AGREEMENT_SENT, BigDecimal.valueOf(1000), customerId));
+                agreementId,
+                AgreementStatus.AGREEMENT_SENT,
+                BigDecimal.valueOf(1000),
+                agreementDate,
+                customerId));
 
     // When:
     Map<String, Object> data = new HashMap<>();
     data.put("customerPid", customerPid);
     data.put("customerName", customerName);
     data.put("agreementPrice", agreementPrice);
+    data.put("agreementDate", "1999-01-24");
     Response response =
         target("/api/agreement")
             .request()
@@ -72,7 +86,7 @@ public class IntegrationControllerTest extends JerseyTest {
     // Then:
     assertEquals(200, response.getStatus());
     assertEquals(
-        "{\"agreementPrice\":1000,\"customerId\":\"%s\",\"id\":\"%s\",\"status\":\"AGREEMENT_SENT\"}"
+        "{\"agreementDate\":\"1999-01-24\",\"agreementPrice\":1000,\"customerId\":\"%s\",\"id\":\"%s\",\"status\":\"AGREEMENT_SENT\"}"
             .formatted(customerId, agreementId),
         response.readEntity(String.class));
   }
@@ -84,6 +98,7 @@ public class IntegrationControllerTest extends JerseyTest {
     data.put("customerPid", "111111111111111111");
     data.put("customerName", "Donald Duck");
     data.put("agreementPrice", 1000);
+    data.put("agreementDate", "1999-01-24");
 
     // When:
     Response response =
@@ -95,17 +110,19 @@ public class IntegrationControllerTest extends JerseyTest {
     // Then:
     assertEquals(400, response.getStatus());
     assertEquals(
-        "{\"errors\":[{\"field\":\"createAgreement.arg0.customerPid\",\"message\":\"size must be between 1 and 11\"}]}",
+        "{\"errors\":[{\"field\":\"createAgreement.arg0.customerPid\",\"message\":\"Customer pid is not valid\"}]}",
         response.readEntity(String.class));
   }
 
   @Test
   public void createAgreementWithBadAgreementPrice() {
     // Given:
+    var pid = FodselsnummerCalculator.getFodselsnummerForDate(new Date()).toString();
     Map<String, Object> data = new HashMap<>();
-    data.put("customerPid", "01019912345");
+    data.put("customerPid", pid);
     data.put("customerName", "Donald Duck");
     data.put("agreementPrice", 0);
+    data.put("agreementDate", "1999-01-24");
 
     // When:
     Response response =
@@ -124,10 +141,12 @@ public class IntegrationControllerTest extends JerseyTest {
   @Test
   public void createAgreementWithBadCustomerName() {
     // Given:
+    var pid = FodselsnummerCalculator.getFodselsnummerForDate(new Date()).toString();
     Map<String, Object> data = new HashMap<>();
-    data.put("customerPid", "01019912345");
+    data.put("customerPid", pid);
     data.put("customerName", "");
     data.put("agreementPrice", 1000);
+    data.put("agreementDate", "1999-01-24");
 
     // When:
     Response response =
@@ -140,6 +159,29 @@ public class IntegrationControllerTest extends JerseyTest {
     assertEquals(400, response.getStatus());
     assertEquals(
         "{\"errors\":[{\"field\":\"createAgreement.arg0.customerName\",\"message\":\"size must be between 1 and 100\"}]}",
+        response.readEntity(String.class));
+  }
+
+  @Test
+  public void createAgreementWithMissingAgreementDate() {
+    // Given:
+    var pid = FodselsnummerCalculator.getFodselsnummerForDate(new Date()).toString();
+    Map<String, Object> data = new HashMap<>();
+    data.put("customerPid", pid);
+    data.put("customerName", "Test customer");
+    data.put("agreementPrice", 1000);
+
+    // When:
+    Response response =
+        target("/api/agreement")
+            .request()
+            .header("Content-Type", "application/json")
+            .post(Entity.entity(data, "application/json"));
+
+    // Then:
+    assertEquals(400, response.getStatus());
+    assertEquals(
+        "{\"errors\":[{\"field\":\"createAgreement.arg0.agreementDate\",\"message\":\"must not be null\"}]}",
         response.readEntity(String.class));
   }
 
