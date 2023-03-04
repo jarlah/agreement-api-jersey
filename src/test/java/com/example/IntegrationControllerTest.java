@@ -13,6 +13,8 @@ import com.example.demo.services.business.models.Customer;
 import com.example.demo.services.integration.IntegrationService;
 import com.example.demo.services.integration.IntegrationServiceImpl;
 import com.example.demo.services.letter.LetterService;
+import com.example.demo.services.letter.exceptions.LetterFailedExceptionException;
+import com.example.demo.services.letter.models.LetterStatus;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
@@ -31,8 +33,8 @@ public class IntegrationControllerTest extends JerseyTest {
 
   @Test
   public void test()
-      throws CreateCustomerFailedException, CreateAgreementFailedException,
-          UpdateAgreementStatusFailedException {
+      throws LetterFailedExceptionException, CreateCustomerFailedException,
+          CreateAgreementFailedException, UpdateAgreementStatusFailedException {
     // Given:
     var customerId = UUID.randomUUID();
     var customerPid = "1234";
@@ -43,6 +45,8 @@ public class IntegrationControllerTest extends JerseyTest {
     var agreement =
         new Agreement(
             agreementId, AgreementStatus.DRAFT, BigDecimal.valueOf(agreementPrice), customerId);
+    Mockito.when(mockLetterService.sendAgreementLetterToCustomer(agreement, customer))
+        .thenReturn(LetterStatus.SENT_OK);
     Mockito.when(mockBusinessService.createCustomer(customerPid, customerName))
         .thenReturn(customer);
     Mockito.when(

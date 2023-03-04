@@ -6,9 +6,9 @@ import com.example.demo.services.business.exceptions.CreateCustomerFailedExcepti
 import com.example.demo.services.business.exceptions.UpdateAgreementStatusFailedException;
 import com.example.demo.services.business.models.Agreement;
 import com.example.demo.services.business.models.AgreementStatus;
-import com.example.demo.services.integration.exceptions.SendAgreementLetterFailedException;
 import com.example.demo.services.integration.models.NewAgreement;
 import com.example.demo.services.letter.LetterService;
+import com.example.demo.services.letter.exceptions.LetterFailedExceptionException;
 import jakarta.inject.Inject;
 
 public class IntegrationServiceImpl implements IntegrationService {
@@ -25,12 +25,12 @@ public class IntegrationServiceImpl implements IntegrationService {
   @Override
   public Agreement createAgreement(NewAgreement newAgreement)
       throws CreateCustomerFailedException, CreateAgreementFailedException,
-          UpdateAgreementStatusFailedException, SendAgreementLetterFailedException {
-    final var customer =
+          UpdateAgreementStatusFailedException, LetterFailedExceptionException {
+    var customer =
         businessService.createCustomer(newAgreement.customerPid(), newAgreement.customerName());
-    final var agreement =
-        businessService.createAgreement(customer.id(), newAgreement.agreementPrice());
-    letterService.sendAgreementLetterToCustomer(agreement, customer);
+    var agreement = businessService.createAgreement(customer.id(), newAgreement.agreementPrice());
+    // Can atm only be successful
+    var status = letterService.sendAgreementLetterToCustomer(agreement, customer);
     return businessService.updateAgreementStatus(agreement, AgreementStatus.AGREEMENT_SENT);
   }
 }
