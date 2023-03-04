@@ -28,7 +28,6 @@ public class HealthControllerTest {
     server.shutdownNow();
   }
 
-  /** Test to see that the message "Got it!" is sent in the response. */
   @Test
   public void testGetIt() {
     String responseMsg = target.path("/health").request().get(String.class);
