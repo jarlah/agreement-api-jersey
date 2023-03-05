@@ -110,7 +110,7 @@ public class IntegrationControllerTest extends JerseyTest {
     // Then:
     assertEquals(400, response.getStatus());
     assertEquals(
-        "{\"errors\":[{\"field\":\"createAgreement.arg0.customerPid\",\"message\":\"Customer pid is not valid\"}]}",
+        "{\"errors\":[{\"field\":\"createNewAgreement.arg0.customerPid\",\"message\":\"Customer pid is not valid\"}]}",
         response.readEntity(String.class));
   }
 
@@ -134,7 +134,7 @@ public class IntegrationControllerTest extends JerseyTest {
     // Then:
     assertEquals(400, response.getStatus());
     assertEquals(
-        "{\"errors\":[{\"field\":\"createAgreement.arg0.agreementPrice\",\"message\":\"must be greater than or equal to 1\"}]}",
+        "{\"errors\":[{\"field\":\"createNewAgreement.arg0.agreementPrice\",\"message\":\"must be greater than or equal to 1\"}]}",
         response.readEntity(String.class));
   }
 
@@ -158,7 +158,7 @@ public class IntegrationControllerTest extends JerseyTest {
     // Then:
     assertEquals(400, response.getStatus());
     assertEquals(
-        "{\"errors\":[{\"field\":\"createAgreement.arg0.customerName\",\"message\":\"size must be between 1 and 100\"}]}",
+        "{\"errors\":[{\"field\":\"createNewAgreement.arg0.customerName\",\"message\":\"size must be between 1 and 100\"}]}",
         response.readEntity(String.class));
   }
 
@@ -181,7 +181,7 @@ public class IntegrationControllerTest extends JerseyTest {
     // Then:
     assertEquals(400, response.getStatus());
     assertEquals(
-        "{\"errors\":[{\"field\":\"createAgreement.arg0.agreementDate\",\"message\":\"must not be null\"}]}",
+        "{\"errors\":[{\"field\":\"createNewAgreement.arg0.agreementDate\",\"message\":\"must not be null\"}]}",
         response.readEntity(String.class));
   }
 
