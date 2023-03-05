@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public record NewAgreementDto(
     @ValidCustomerPid String customerPid,
     @Size(min = 1, max = 100) String customerName,
+    // work in progress fields for more customer data
     String customerAddress,
     String customerEmail,
     String customerPhoneNumber,
