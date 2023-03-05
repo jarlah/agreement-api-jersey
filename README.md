@@ -1,8 +1,19 @@
 # agreement api
 
+I started with Spring Boot 3 but ended with this Jersey implementation.
+
 The original implementation of this repository, implemented with spring boot 3, can be found at:
 
 https://github.com/jarlah/agreement-api
+
+This repository has a line coverage of 66%, which was found by running tests with coverage from intellij.
+One of the reasons there is so low coverage is because i mock the service interfaces,
+and the dummy implementations is not used in tests.
+
+The dummy services is added to make the service runnable and testable.
+
+I need more information about the domain and the feature, to decide exactly what fields needs to be passed into the service
+and what to return.
 
 # How to call the agreement api
 
