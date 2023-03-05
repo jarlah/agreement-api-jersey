@@ -15,10 +15,12 @@ https://github.com/jarlah/agreement-api
 # todo
 
 - [x] Find out how to add correlationId filter for logging (not as easy as in spring boot)
+- [ ] Add api doc with openapi/swagger
+    - [X] have added some annotations, but no autogeneration of spec
 
 # Possible agreement fields
 
-inspiration taken from https://storman.com/api/rest/#create-agreement
+just some random inspiration taken from https://storman.com/api/rest/#create-agreement
 
 ```
 customer_id	integer	The primary key of the Customer this agreement belongs to.	Yes
