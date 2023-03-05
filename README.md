@@ -19,7 +19,7 @@ The rest api is deployable in docker and docker image is built in github actions
 
 Code is formatted on compile and checked in github actions.
 
-Uses Java 19 with the record syntax.
+Requires Java 19.
 
 # How to call the agreement api
 
