@@ -12,6 +12,9 @@ import java.time.LocalDate;
 public record NewAgreementDto(
     @ValidCustomerPid String customerPid,
     @Size(min = 1, max = 100) String customerName,
+    String customerAddress,
+    String customerEmail,
+    String customerPhoneNumber,
     // avoid horrendously large agreements
     @Min(1) @Max(100000000) BigDecimal agreementPrice,
     @NotNull LocalDate agreementDate) {
