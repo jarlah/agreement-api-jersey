@@ -15,6 +15,12 @@ The dummy services is added to make the service runnable and testable.
 I need more information about the domain and the feature, to decide exactly what fields needs to be passed into the service
 and what to return.
 
+The rest api is deployable in docker and docker image is built in github actions.
+
+Code is formatted on compile and checked in github actions.
+
+Uses Java 19 with the record syntax.
+
 # How to call the agreement api
 
 ```
