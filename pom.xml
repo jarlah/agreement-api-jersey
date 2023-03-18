@@ -122,8 +122,8 @@
                 <version>3.8.1</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>19</source>
-                    <target>19</target>
+                    <source>18</source>
+                    <target>18</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -168,6 +168,6 @@
         <jersey.version>3.1.1</jersey.version>
         <junit-jupiter.version>5.9.1</junit-jupiter.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>19</java.version>
+        <java.version>18</java.version>
     </properties>
 </project>
