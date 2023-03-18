@@ -14,7 +14,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 
 /** Main class. */
 public class Main {
-  public static final String BASE_URI = "http://localhost:8080/";
+  public static final String BASE_URI = "http://0.0.0.0:8080/";
 
   public static HttpServer startServer() {
     var rc =
